@@ -1,0 +1,30 @@
+
+.allProducts{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10%;
+}
+
+
+.allProductsItems{
+    border: 1px solid green;
+    margin: 10px 30px;
+    text-align: center;
+    width: 18%;
+    height: 18em;
+}
+
+.allProductsItems img{
+    width: 80%;
+}
+
+.productDetails img{
+    height: 40vh;
+    width: auto;
+    /* border: 1px solid green; */
+}
+
+
+
