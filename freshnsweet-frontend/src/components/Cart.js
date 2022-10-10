@@ -6,7 +6,7 @@ import axios from 'axios';
 import '../App.css';
 import '../css/cart.css';
 
-const PRODUCT_BASE_URL = 'http://localhost:3000/';
+const BASE_URL = 'http://localhost:3000/';
 
 function Cart() {
 
@@ -24,8 +24,12 @@ function Cart() {
     const showCartProducts = async () => {
         try {
             setLoading(true);
-
-            const res = await axios.get(PRODUCT_BASE_URL + 'user');
+            let token = "Bearer " + localStorage.getItem('jwt');
+            const res = await axios.get(BASE_URL + 'user', {
+                headers: {
+                    'Authorization': token
+                  }
+            });
             console.log('Cart useEffect', res.data);
 
             setLoading(false);

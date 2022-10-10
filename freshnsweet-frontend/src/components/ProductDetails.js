@@ -10,7 +10,7 @@ import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
 import '../App.css';
 import '../css/products.css';
 
-const PRODUCT_BASE_URL = 'http://localhost:3000/';
+const BASE_URL = 'http://localhost:3000/';
 
 function ProductDetails() {
 

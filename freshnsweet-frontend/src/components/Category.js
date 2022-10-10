@@ -6,7 +6,7 @@ import axios from 'axios';
 import '../App.css'
 import '../css/products.css'
 
-const PRODUCT_BASE_URL = 'http://localhost:3000/';
+const BASE_URL = 'http://localhost:3000/';
 
 function Category(){
 

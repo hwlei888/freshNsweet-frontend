@@ -7,7 +7,7 @@ import '../App.css'
 import '../css/products.css'
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
-const PRODUCT_BASE_URL = 'http://localhost:3000/';
+const BASE_URL = 'http://localhost:3000/';
 
 function AllProducts(props){ // try delete props
 
@@ -25,7 +25,7 @@ function AllProducts(props){ // try delete props
 
     //         setLoading(true); // To show message when re-searching
 
-    //         const res = await axios.get(PRODUCT_BASE_URL + 'products');
+    //         const res = await axios.get(BASE_URL + 'products');
     //         console.log('AllProducts useEffect', res.data);
 
     //         setLoading(false);
@@ -51,7 +51,7 @@ function AllProducts(props){ // try delete props
 
             setLoading(true); // To show message when re-searching
 
-            const res = await axios.get(PRODUCT_BASE_URL + 'products');
+            const res = await axios.get(BASE_URL + 'products');
             console.log('AllProducts useEffect', res.data);
 
             setLoading(false);
