@@ -21,7 +21,7 @@ function Main() {
             <nav>
                 <Link to="/">Home</Link>
                 <Link to="/products">All Products</Link>
-                <Link to="/cart">My Cart</Link>
+                <Link to="/user">My Cart</Link>
                 <br />
                 <Link to="/category/Fruit">Fruit</Link>
                 <Link to="/category/Vegetable">Vegetable</Link>
@@ -34,7 +34,7 @@ function Main() {
                 <Routes>
                     <Route exact path='/' element={< Home/>}/>
                     <Route path='/products' element={< AllProducts/>} />
-                    <Route path='/cart' element={< Cart/>} />
+                    <Route path='/user' element={< Cart/>} />
                     <Route path='/products/:id' element={< ProductDetails/>} />
                     <Route path='/category/:title' element={< Category />} />
 

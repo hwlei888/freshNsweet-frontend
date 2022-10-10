@@ -7,8 +7,8 @@ import Carousel from 'react-bootstrap/Carousel'
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
 
-import '../App.css'
-import '../css/products.css'
+import '../App.css';
+import '../css/products.css';
 
 const PRODUCT_BASE_URL = 'http://localhost:3000/';
 

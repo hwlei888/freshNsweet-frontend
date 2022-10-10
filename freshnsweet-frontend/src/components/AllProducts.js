@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import '../App.css'
 import '../css/products.css'
+import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
 const PRODUCT_BASE_URL = 'http://localhost:3000/';
 
@@ -16,6 +17,7 @@ function AllProducts(props){ // try delete props
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [products, setProducts] = useState([]);
+    // const [cartItem, setCartItem] = useState(null);
 
     // equivalent of componentDidMount()
     // useEffect(async () => {
@@ -74,6 +76,21 @@ function AllProducts(props){ // try delete props
         push(`/products/${productID}`)
     }
 
+    const addToCart = async(item) => {
+        console.log('handleClick AllProducts', item); // for test
+        // setCartItem(item);
+        // if(cartItem){
+            // try{
+                const res = await axios.post(`http://localhost:3000/user`, item )
+                console.log('addToCart res.data', res.data);
+
+            // }catch(err){
+            //     console.error('Error saving cart item');
+            //     this.error = err;
+            // }
+        // }
+    }
+
 
     return (
         <div className='allProductsPage'>
@@ -93,9 +110,11 @@ function AllProducts(props){ // try delete props
                         />
                         <p>{item.title}</p>
                         <p>${item.price} / {item.weight}</p>
+                        <button onClick={() => addToCart(item)}>Add to Cart</button>
                     </div>
                 )
             }
+            
             </div>
         </div>
     );
