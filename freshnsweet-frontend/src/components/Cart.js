@@ -1,5 +1,6 @@
 
 import React, {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,13 +9,14 @@ import '../css/cart.css';
 
 const BASE_URL = 'http://localhost:3000/';
 
-function Cart() {
 
-    // const params = useParams();
+function Cart() {
+    // Redux
+    const currentUser = useSelector(state => state.currentUser);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [cart, setCart] = useState(null);
+    // const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         showCartProducts();
@@ -22,18 +24,12 @@ function Cart() {
     }, []);
 
     const showCartProducts = async () => {
+        // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         try {
-            setLoading(true);
-            let token = "Bearer " + localStorage.getItem('jwt');
-            const res = await axios.get(BASE_URL + 'user', {
-                headers: {
-                    'Authorization': token
-                  }
-            });
-            console.log('Cart useEffect', res.data);
-
             setLoading(false);
-            setCart(res.data.cart);
+            // localStorage
+            // console.log('Cart', currentUser); // test
+            // setCurrentUser(currentUser);
 
         }catch(err){
             console.error('Error loading products in cart', err);
@@ -43,7 +39,7 @@ function Cart() {
         }
     }
 
-    // 
+    
     return (
         <div>
             <h2>My Cart</h2>
@@ -55,17 +51,17 @@ function Cart() {
                     ?
                     <p>Loading results...</p>
                     :
-                    cart &&
+                    currentUser.cart &&
                     <div className='cartDetails center'>
                         {
-                            cart.map((item, index) => 
+                            currentUser.cart.map((item, index) => 
                             <div key={item._id}>
+                                {item.quantity}
                                 <img 
                                 src={item.product.images[0].url} 
                                 alt={`${item.product.title} image`}
                                 />
-                                <p>{item.product.title}</p>
-                                <p>{item.quantity}</p>
+                                {item.product.title}
                             </div>
                             
                             )

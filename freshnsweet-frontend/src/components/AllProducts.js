@@ -2,45 +2,42 @@
 import {useState, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 
 import '../App.css'
 import '../css/products.css'
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
-const BASE_URL = 'http://localhost:3000/';
+const PRODUCT_BASE_URL = 'http://localhost:3000/';
+
 
 function AllProducts(props){ // try delete props
 
     // const params = useParams();
     const push = useNavigate();
+    // const dispatch = useDispatch();
+
+    // const quantity = useSelector(state => state.quantity);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [products, setProducts] = useState([]);
-    // const [cartItem, setCartItem] = useState(null);
+    const [products, setProducts] = useState(null);
+    const [newCartItem, setNewCartItem] = useState(null);
 
-    // equivalent of componentDidMount()
-    // useEffect(async () => {
-    //     try {
+    const [cartItemQuantity, setCartItemQuantity] = useState({});
 
-    //         setLoading(true); // To show message when re-searching
+    // if(products){
+    //     const cartItemObject = {};
+    //     console.log(products)
+    //     products.map(item => 
+    //         cartItemObject[item.title] = 0
+    //     )
+    //     console.log(cartItemObject);
+    //     // setCartItemQuantity(cartItemObject);
+    // }
 
-    //         const res = await axios.get(BASE_URL + 'products');
-    //         console.log('AllProducts useEffect', res.data);
 
-    //         setLoading(false);
-    //         setProducts(res.data);
 
-    //     }catch(err){
-    //         console.error('Error loading All products', err);
-            
-    //         setLoading(false);
-    //         setError(err);
-    //     }
-
-    // },[]);
-
-    // why move out and no error ????????????????
     useEffect(() => {
         findAllProdcuts();
 
@@ -51,7 +48,7 @@ function AllProducts(props){ // try delete props
 
             setLoading(true); // To show message when re-searching
 
-            const res = await axios.get(BASE_URL + 'products');
+            const res = await axios.get(PRODUCT_BASE_URL + 'products');
             console.log('AllProducts useEffect', res.data);
 
             setLoading(false);
@@ -72,23 +69,38 @@ function AllProducts(props){ // try delete props
     }
 
     function handleClick(productID){
-        console.log('handleClick AllProducts', productID); // for test
+        // console.log('handleClick AllProducts', productID); // for test
         push(`/products/${productID}`)
     }
 
+
+
     const addToCart = async(item) => {
-        console.log('handleClick AllProducts', item); // for test
+        // console.log('handleClick AllProducts', item); // for test
         // setCartItem(item);
         // if(cartItem){
             // try{
                 const res = await axios.post(`http://localhost:3000/user`, item )
-                console.log('addToCart res.data', res.data);
+                console.log('addToCart res.data', res.data); // for test
 
             // }catch(err){
             //     console.error('Error saving cart item');
             //     this.error = err;
             // }
         // }
+    }
+
+    function toggleCartItemQuantity(id, value){
+        const foundProduct = products.find(item => item._id === id);
+        // console.log('toggleCartItemQuantity', foundProduct);
+
+        if(value === 'inc'){
+            setNewCartItem({...foundProduct, quantity: foundProduct.selectQuantity + 1})
+        }else if(value === 'dec'){
+            if (foundProduct.quantity > 0){
+                setNewCartItem({...foundProduct, quantity: foundProduct.selectQuantity - 1})
+            }
+        }
     }
 
 
@@ -101,6 +113,7 @@ function AllProducts(props){ // try delete props
                 ?
                 <p>Loading results...</p>
                 :
+                products &&
                 products.map((item, index) =>
                     <div className='allProductsItems' key={item._id}>
                         <img 
@@ -110,6 +123,18 @@ function AllProducts(props){ // try delete props
                         />
                         <p>{item.title}</p>
                         <p>${item.price} / {item.weight}</p>
+
+                        <div className='quantityChange'>
+                            <button className='minus' onClick={() => toggleCartItemQuantity(item._id, 'dec')} >
+                                -
+                            </button>
+                            <span className='num'>
+                                {/* {cartItemQuantity.(item.title)} */}
+                            </span>
+                            <button className='plus' onClick={() => toggleCartItemQuantity(item._id, 'inc')}>
+                                +
+                            </button>
+                        </div>
                         <button onClick={() => addToCart(item)}>Add to Cart</button>
                     </div>
                 )

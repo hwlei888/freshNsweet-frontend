@@ -19,6 +19,8 @@ function ProductDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [productDetails, setProductDetails] = useState(null);
+    
+    const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
 
@@ -33,7 +35,7 @@ function ProductDetails() {
             setLoading(true);
 
             const res = await axios.get(`http://localhost:3000/products/${params.id}`);
-            console.log('data ProductDetails', res.data.product); // for test
+            // console.log('data ProductDetails', res.data.product); // for test
 
             setLoading(false);
             setProductDetails(res.data.product);
@@ -45,6 +47,29 @@ function ProductDetails() {
             setError(err);
         }
     }
+    
+
+    function toggleCartItemQuantity(value){
+        // const foundProduct = products.find(item => item._id === id);
+        // console.log('toggleCartItemQuantity', foundProduct);
+
+        if(value === 'inc'){
+            setQuantity(quantity + 1);
+        }else if(value === 'dec'){
+            if (quantity > 0){
+                setQuantity(quantity - 1);
+            }
+        }
+    }
+
+    const addToCart = async(item) => {
+
+        const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantity} )
+        console.log('addToCart res.data', res.data); // for test
+
+    }
+
+
 
 
     if(error){
@@ -85,6 +110,19 @@ function ProductDetails() {
                         <p>{productDetails.title}</p>
                         <p>${productDetails.price} / {productDetails.weight}</p>
                     </div>
+
+                    <div className='quantityChange'>
+                            <button className='minus' onClick={() => toggleCartItemQuantity('dec')} >
+                                -
+                            </button>
+                            <span className='num'>
+                                {quantity}
+                            </span>
+                            <button className='plus' onClick={() => toggleCartItemQuantity('inc')}>
+                                +
+                            </button>
+                    </div>
+                    <button onClick={() => addToCart(productDetails)}>Add to Cart</button>
 
                     <div>
                         {

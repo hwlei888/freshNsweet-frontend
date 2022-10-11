@@ -1,10 +1,13 @@
 
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 const BASE_URL = 'http://localhost:3000/';
 
 function Login(props){
+
+    const push = useNavigate();
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -24,10 +27,10 @@ function Login(props){
         
         axios.post(BASE_URL + 'login', request)
         .then(result => {
-            localStorage.setItem('jwt', result.data.token)
+            localStorage.setItem('jwt', result.data.token);
             console.log('Login handlesubmit', result.data.token); // test
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + result.data.token;
-            props.setCurrentUserLogin();
+            props.fetchCurrentUser();
+            push('/products');
         })
         .catch(err => {
             console.warn(err)

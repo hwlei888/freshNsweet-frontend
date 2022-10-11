@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import axios from 'axios';
 import {HashRouter as Router, Link, Route, Routes} from 'react-router-dom';
 
 import '../App.css';
-
 
 import Home from './Home';
 import AllProducts from './AllProducts';
@@ -15,32 +16,40 @@ import Login from './Login';
 
 const BASE_URL = 'http://localhost:3000/';
 
-function Main() {
 
-    const [currentUser, setCurrentUser] = useState(null);
+function Main() {
+    
+    const dispatch = useDispatch();
+
+    const currentUser = useSelector(state => state.currentUser);
+
 
     useEffect(() => {
-        setCurrentUserFunction();
+        fetchCurrentUser();
     },[]);
 
-    const setCurrentUserFunction = () => {
-        let token = "Bearer " + localStorage.getItem('jwt');
-        console.log('Main setCurrentUserFunction', token); // test
-        axios.get(BASE_URL + 'users/current', {
-            headers: {
-                'Authorization': token
-              }
-        })
-        .then(res => {
-            setCurrentUser(res.data);
-        })
-        .catch(err => console.warn(err))
+    const fetchCurrentUser = async () => {
+        const token = localStorage.getItem('jwt');
+        if(token){
+            try{
+                // console.log('This setCurrentUserFunction', token); // test
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+                const res = await axios.get(BASE_URL + 'users/current');
+                dispatch({type: 'currentUser/set', payload: res.data});
+                localStorage.setItem('currentUser', JSON.stringify(res.data));
+
+            }catch(err) {
+                console.error('Error fetchCurrentUser', err)
+            }
+        }
+        
     }
 
     const handleLogout = () => {
-        setCurrentUser(null);
+        // setCurrentUser(null);
         localStorage.removeItem('jwt');
         axios.defaults.headers.common['Authorization'] = undefined;
+        dispatch({type: 'currentUser/set', payload: null});
     }
 
 
@@ -88,7 +97,7 @@ function Main() {
                     <Route path='/user' element={< Cart/>} />
                     <Route path='/products/:id' element={< ProductDetails/>} />
                     <Route path='/category/:title' element={< Category />} />
-                    <Route path='/login' element={<Login setCurrentUserLogin={setCurrentUserFunction} />} />
+                    <Route path='/login' element={<Login fetchCurrentUser={fetchCurrentUser}/>} />
 
                 </Routes>
             </Router>
