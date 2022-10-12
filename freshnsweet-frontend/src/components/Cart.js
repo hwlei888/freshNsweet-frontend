@@ -13,6 +13,9 @@ const BASE_URL = 'http://localhost:3000/';
 function Cart() {
     // Redux
     const currentUser = useSelector(state => state.currentUser);
+    console.log('Cart currentUser', currentUser); // test
+
+    
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -28,7 +31,7 @@ function Cart() {
         try {
             setLoading(false);
             // localStorage
-            // console.log('Cart', currentUser); // test
+            // console.log('Cart currentUser', currentUser); // test
             // setCurrentUser(currentUser);
 
         }catch(err){
@@ -37,6 +40,14 @@ function Cart() {
             setLoading(false);
             setError(err);
         }
+    }
+
+    const TotalPrice = () => {
+        let totalAmount = 0;
+        currentUser.cart.map(item => {
+            totalAmount += item.quantity * item.product.price
+        })
+        return totalAmount;
     }
 
     
@@ -51,22 +62,33 @@ function Cart() {
                     ?
                     <p>Loading results...</p>
                     :
-                    currentUser.cart &&
+                    currentUser &&
                     <div className='cartDetails center'>
                         {
                             currentUser.cart.map((item, index) => 
-                            <div key={item._id}>
+                            <div key={index}>
                                 {item.quantity}
                                 <img 
                                 src={item.product.images[0].url} 
                                 alt={`${item.product.title} image`}
                                 />
                                 {item.product.title}
+
+                                total:${item.quantity * item.product.price}
+
                             </div>
-                            
                             )
                         }
+
+                        <div>
+                            Totol: $<TotalPrice/>
+                        </div>
+
+                        <button>
+                            Checkout
+                        </button>
                     </div>
+
                 }
             </div>
         </div>

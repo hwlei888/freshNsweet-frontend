@@ -17,14 +17,13 @@ function AllProducts(props){ // try delete props
     const push = useNavigate();
     // const dispatch = useDispatch();
 
-    // const quantity = useSelector(state => state.quantity);
+    const currentUser = useSelector(state => state.currentUser);
+    console.log('AllProducts currentUser', currentUser);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [products, setProducts] = useState(null);
-    const [newCartItem, setNewCartItem] = useState(null);
-
-    const [cartItemQuantity, setCartItemQuantity] = useState({});
+    const [quantities, setQuantities] = useState({});
 
     // if(products){
     //     const cartItemObject = {};
@@ -54,6 +53,19 @@ function AllProducts(props){ // try delete props
             setLoading(false);
             setProducts(res.data);
 
+            // if(currentUser){
+            //     // for(let p = 0; p < res.data.length; p++){
+            //     res.data.map(p => {
+            //         let foundProduct = currentUser.cart.find(item => item.product._id === p._id);
+            //         if(foundProduct){
+            //             setQuantities({
+            //                 ...quantities,
+            //                 [foundProduct.product._id]: foundProduct.quantity
+            //             })
+            //         }
+            //     })
+            // }
+
         }catch(err){
             console.error('Error loading All products', err);
             
@@ -76,32 +88,50 @@ function AllProducts(props){ // try delete props
 
 
     const addToCart = async(item) => {
-        // console.log('handleClick AllProducts', item); // for test
-        // setCartItem(item);
-        // if(cartItem){
-            // try{
-                const res = await axios.post(`http://localhost:3000/user`, item )
-                console.log('addToCart res.data', res.data); // for test
 
-            // }catch(err){
-            //     console.error('Error saving cart item');
-            //     this.error = err;
-            // }
-        // }
-    }
+        // setCartItem({
+        //     product: item,
+        //     quantity: quantities[item._id]
+        // })
 
-    function toggleCartItemQuantity(id, value){
-        const foundProduct = products.find(item => item._id === id);
-        // console.log('toggleCartItemQuantity', foundProduct);
-
-        if(value === 'inc'){
-            setNewCartItem({...foundProduct, quantity: foundProduct.selectQuantity + 1})
-        }else if(value === 'dec'){
-            if (foundProduct.quantity > 0){
-                setNewCartItem({...foundProduct, quantity: foundProduct.selectQuantity - 1})
-            }
+        const checkProductInCart = currentUser.cart.find((currentUserItem) => currentUserItem.product.title === item.title );
+        
+        if(checkProductInCart){
+            currentUser.cart.map((currentUserCart) => {
+                if(currentUserCart.product.title === item.title){
+                    currentUserCart.quantity += quantities[item._id];
+                }
+            })
+            const res = await axios.post(`http://localhost:3000/user/update`,  currentUser.cart)
+        }else {
+            currentUser.cart.push({
+                quantity: quantities[item._id],
+                product: item,
+            })
+            const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantities[item._id]} )
         }
     }
+
+
+
+
+
+    
+    function changeCartItemQuantity(id, value){
+
+        // console.log('changeCartItemQuantity', id, value, quantities); // test
+        const quantity = quantities[id] || 1
+        let newQuantity = quantity + value;
+        if(newQuantity < 0){
+            newQuantity = 0;
+        }
+        setQuantities({
+            ...quantities,
+            [id]: newQuantity
+        })
+
+        }
+    
 
 
     return (
@@ -125,17 +155,19 @@ function AllProducts(props){ // try delete props
                         <p>${item.price} / {item.weight}</p>
 
                         <div className='quantityChange'>
-                            <button className='minus' onClick={() => toggleCartItemQuantity(item._id, 'dec')} >
+                            <button className='minus' onClick={() => changeCartItemQuantity(item._id, -1)} >
                                 -
                             </button>
                             <span className='num'>
-                                {/* {cartItemQuantity.(item.title)} */}
+                                {quantities[item._id] || 1}
                             </span>
-                            <button className='plus' onClick={() => toggleCartItemQuantity(item._id, 'inc')}>
+                            <button className='plus' onClick={() => changeCartItemQuantity(item._id, +1)}>
                                 +
                             </button>
                         </div>
                         <button onClick={() => addToCart(item)}>Add to Cart</button>
+
+                        <p>You have:{quantities[item._id] || 0}</p>
                     </div>
                 )
             }

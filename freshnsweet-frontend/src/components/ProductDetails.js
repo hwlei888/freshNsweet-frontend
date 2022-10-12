@@ -2,6 +2,7 @@
 // import React from 'react';
 import {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel'
 import "bootstrap/dist/css/bootstrap.css";
@@ -16,11 +17,17 @@ function ProductDetails() {
 
     const params = useParams();
 
+    const currentUser = useSelector(state => state.currentUser);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [productDetails, setProductDetails] = useState(null);
     
     const [quantity, setQuantity] = useState(0);
+
+    // const [cartItem, setCartItem] = useState({product: '', quantity: 0});
+    const [cartItem, setCartItem] = useState({});
+
 
     useEffect(() => {
 
@@ -62,12 +69,60 @@ function ProductDetails() {
         }
     }
 
+    // const addToCart = async(item) => {
+
+    //     const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantity} )
+    //     console.log('addToCart res.data', res.data); // for test
+    //     setCartItem((prevState) => ({
+    //         ...prevState,
+    //         product: res.data.product,
+    //         quantity: res.data.quantity
+    //     }))
+
+    //     const checkProductInCart = currentUser.cart.find((item) => item.product.title === res.data.product.title );
+        
+    //     if(checkProductInCart){
+    //         currentUser.cart.map((cartProduct) => {
+    //             if(cartProduct.product.title === res.data.product.title){
+    //                 cartProduct.quantity += res.data.quantity;
+    //             }
+    //         })
+    //     }else {
+    //         currentUser.cart.push({
+    //             quantity: res.data.quantity,
+    //             product: res.data.product,
+    //         })
+    //     }
+    // }
+
+
     const addToCart = async(item) => {
 
-        const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantity} )
-        console.log('addToCart res.data', res.data); // for test
+        // setCartItem({
+        //     product: item,
+        //     quantity: quantity
+        // })
 
+        const checkProductInCart = currentUser.cart.find((currentUserItem) => currentUserItem.product.title === item.title );
+        
+        if(checkProductInCart){
+            currentUser.cart.map((currentUserCart) => {
+                if(currentUserCart.product.title === item.title){
+                    currentUserCart.quantity += quantity;
+                }
+            })
+            const res = await axios.post(`http://localhost:3000/user/update`,  currentUser.cart)
+        }else {
+            currentUser.cart.push({
+                quantity: quantity,
+                product: item,
+            })
+            const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantity} )
+        }
     }
+   
+    // console.log('cartItem', cartItem)
+    console.log('currentUser', currentUser)
 
 
 
@@ -89,7 +144,8 @@ function ProductDetails() {
                 productDetails &&
                 <div className='productDetails center'>
                     
-                        <Carousel interval={null}>
+                        {/* <Carousel interval={null}> */}
+                        <Carousel>
                            
                             {
                                 productDetails.images.map((item, index) =>
@@ -127,7 +183,7 @@ function ProductDetails() {
                     <div>
                         {
                             productDetails.categories.map((item, index) => 
-                                <p key={item._id}>{item.title}</p>
+                                <p key={index}>{item.title}</p>
                             )
                         }
                         <p>{productDetails.introduction}</p>

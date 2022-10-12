@@ -15,11 +15,6 @@ function reducer(state = initialState, action){
                 ...state,
                 currentUser: action.payload,
             }
-        // case 'Product/quantity':
-        //     return{
-        //         ...state,
-        //         quantity: action.payload,
-        //     }
         default:
             console.log('UNMATCHED ACTION:', action);
             return state;
