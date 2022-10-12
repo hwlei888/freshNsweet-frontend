@@ -55,6 +55,7 @@ function Cart() {
         <div>
             <h2>My Cart</h2>
             <p>TODO make the quantity increase and decrease</p>
+            <p>TODO add title to table</p>
             
             <div>
                 {
@@ -63,22 +64,35 @@ function Cart() {
                     <p>Loading results...</p>
                     :
                     currentUser &&
-                    <div className='cartDetails center'>
+                    <div className='cartDetailsBox center'>
+                        <div className='cartDetailsGrid'>
                         {
                             currentUser.cart.map((item, index) => 
-                            <div key={index}>
-                                {item.quantity}
-                                <img 
-                                src={item.product.images[0].url} 
-                                alt={`${item.product.title} image`}
-                                />
-                                {item.product.title}
+                            <div className='cartDetailsSingle' key={index}>
 
-                                total:${item.quantity * item.product.price}
+                                <div>
+                                    <img 
+                                    src={item.product.images[0].url} 
+                                    alt={`${item.product.title} image`}
+                                    />
+                                </div>
+
+                                <div>
+                                    {item.product.title}
+                                </div>
+
+                                <div>
+                                {item.quantity}
+                                </div>
+
+                                <div>
+                                    ${(item.quantity * item.product.price).toFixed(2)}
+                                </div>
 
                             </div>
                             )
                         }
+                        </div>
 
                         <div>
                             Totol: $<TotalPrice/>
@@ -87,8 +101,8 @@ function Cart() {
                         <button>
                             Checkout
                         </button>
-                    </div>
 
+                    </div>
                 }
             </div>
         </div>

@@ -36,7 +36,7 @@ function Main() {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
                 const res = await axios.get(BASE_URL + 'users/current');
                 dispatch({type: 'currentUser/set', payload: res.data});
-                localStorage.setItem('currentUser', JSON.stringify(res.data));
+                // localStorage.setItem('currentUser', JSON.stringify(res.data));
 
             }catch(err) {
                 console.error('Error fetchCurrentUser', err)

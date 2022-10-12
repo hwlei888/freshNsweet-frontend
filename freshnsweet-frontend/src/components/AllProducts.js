@@ -11,30 +11,21 @@ import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 const PRODUCT_BASE_URL = 'http://localhost:3000/';
 
 
-function AllProducts(props){ // try delete props
+function AllProducts(){
 
     // const params = useParams();
     const push = useNavigate();
     // const dispatch = useDispatch();
 
     const currentUser = useSelector(state => state.currentUser);
+    
     console.log('AllProducts currentUser', currentUser);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [products, setProducts] = useState(null);
     const [quantities, setQuantities] = useState({});
-
-    // if(products){
-    //     const cartItemObject = {};
-    //     console.log(products)
-    //     products.map(item => 
-    //         cartItemObject[item.title] = 0
-    //     )
-    //     console.log(cartItemObject);
-    //     // setCartItemQuantity(cartItemObject);
-    // }
-
+    const [showAddDone, setShowAddDone] = useState({});
 
 
     useEffect(() => {
@@ -52,19 +43,6 @@ function AllProducts(props){ // try delete props
 
             setLoading(false);
             setProducts(res.data);
-
-            // if(currentUser){
-            //     // for(let p = 0; p < res.data.length; p++){
-            //     res.data.map(p => {
-            //         let foundProduct = currentUser.cart.find(item => item.product._id === p._id);
-            //         if(foundProduct){
-            //             setQuantities({
-            //                 ...quantities,
-            //                 [foundProduct.product._id]: foundProduct.quantity
-            //             })
-            //         }
-            //     })
-            // }
 
         }catch(err){
             console.error('Error loading All products', err);
@@ -89,28 +67,57 @@ function AllProducts(props){ // try delete props
 
     const addToCart = async(item) => {
 
+        setShowAddDone({
+            [item._id]: 'Add Successfully'
+        });
+
+        setQuantities({
+            ...quantities,
+            [item._id]: 1
+        })
+
         // setCartItem({
         //     product: item,
         //     quantity: quantities[item._id]
         // })
 
         const checkProductInCart = currentUser.cart.find((currentUserItem) => currentUserItem.product.title === item.title );
+        // console.log('AllProducts checkProductInCart', checkProductInCart)
+        const itemQuantities = quantities[item._id] || 1;
         
         if(checkProductInCart){
             currentUser.cart.map((currentUserCart) => {
                 if(currentUserCart.product.title === item.title){
-                    currentUserCart.quantity += quantities[item._id];
+                    currentUserCart.quantity += itemQuantities;
                 }
             })
             const res = await axios.post(`http://localhost:3000/user/update`,  currentUser.cart)
         }else {
             currentUser.cart.push({
-                quantity: quantities[item._id],
+                quantity: itemQuantities,
                 product: item,
             })
-            const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantities[item._id]} )
+            const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: itemQuantities} )
+        }
+
+    } // addToCart()
+
+
+    const ShowCurrentQuantity = ({id}) => {
+
+        if(currentUser){
+            const checkProductInCart = currentUser.cart.find((currentUserCart) => currentUserCart.product._id === id );
+            // console.log(checkProductInCart)
+    
+            if(checkProductInCart){
+                return checkProductInCart.quantity;
+            }else {
+                return 0;
+            }
         }
     }
+
+
 
 
 
@@ -119,8 +126,13 @@ function AllProducts(props){ // try delete props
     
     function changeCartItemQuantity(id, value){
 
+        setShowAddDone({
+            [id]: ''
+        });
+
         // console.log('changeCartItemQuantity', id, value, quantities); // test
         const quantity = quantities[id] || 1
+        // const quantity = 1
         let newQuantity = quantity + value;
         if(newQuantity < 0){
             newQuantity = 0;
@@ -129,8 +141,7 @@ function AllProducts(props){ // try delete props
             ...quantities,
             [id]: newQuantity
         })
-
-        }
+    }
     
 
 
@@ -167,7 +178,11 @@ function AllProducts(props){ // try delete props
                         </div>
                         <button onClick={() => addToCart(item)}>Add to Cart</button>
 
-                        <p>You have:{quantities[item._id] || 0}</p>
+                        <p>You have:<ShowCurrentQuantity id={item._id}/></p>
+
+                        <p>
+                            {showAddDone[item._id]}
+                        </p>
                     </div>
                 )
             }

@@ -1,9 +1,19 @@
 
-.cartDetails img{
-    height: 10vh;
-    width: auto;
+div{
     /* border: 1px solid green; */
 }
 
+.cartDetailsBox img{
+    height: 10vh;
+    width: auto;
+}
 
+.cartDetailsSingle{
+    display: grid;
+    grid-template-columns: 20% 40% 10% 20%;
+    justify-items: center;
+    align-items: center;
+    /* border: 1px solid red; */
+    margin: 0 20%;
+}
 

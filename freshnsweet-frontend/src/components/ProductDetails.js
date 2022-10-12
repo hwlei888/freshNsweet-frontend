@@ -26,7 +26,7 @@ function ProductDetails() {
     const [quantity, setQuantity] = useState(0);
 
     // const [cartItem, setCartItem] = useState({product: '', quantity: 0});
-    const [cartItem, setCartItem] = useState({});
+    // const [cartItem, setCartItem] = useState({});
 
 
     useEffect(() => {
@@ -68,32 +68,6 @@ function ProductDetails() {
             }
         }
     }
-
-    // const addToCart = async(item) => {
-
-    //     const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantity} )
-    //     console.log('addToCart res.data', res.data); // for test
-    //     setCartItem((prevState) => ({
-    //         ...prevState,
-    //         product: res.data.product,
-    //         quantity: res.data.quantity
-    //     }))
-
-    //     const checkProductInCart = currentUser.cart.find((item) => item.product.title === res.data.product.title );
-        
-    //     if(checkProductInCart){
-    //         currentUser.cart.map((cartProduct) => {
-    //             if(cartProduct.product.title === res.data.product.title){
-    //                 cartProduct.quantity += res.data.quantity;
-    //             }
-    //         })
-    //     }else {
-    //         currentUser.cart.push({
-    //             quantity: res.data.quantity,
-    //             product: res.data.product,
-    //         })
-    //     }
-    // }
 
 
     const addToCart = async(item) => {
