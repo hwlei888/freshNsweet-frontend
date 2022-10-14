@@ -57,7 +57,7 @@ function Category(){
 
     return(
         <div>
-            <h2>Category</h2>
+            <h2 className='categoryname'>Category</h2>
             <div className='allProducts'>
             {
                 loading

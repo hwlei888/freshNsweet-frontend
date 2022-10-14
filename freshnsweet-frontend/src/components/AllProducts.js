@@ -143,7 +143,7 @@ function AllProducts(){
 
     return (
         <div className='allProductsPage'>
-            <h2>All Products</h2>
+            <h2 className='allproductsname'>All Products</h2>
             <div className='allProducts'>
             {
                 loading

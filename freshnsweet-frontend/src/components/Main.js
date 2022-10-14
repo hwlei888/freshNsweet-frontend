@@ -16,6 +16,7 @@ import Cart from './Cart';
 import Login from './Login';
 import Checkout from './Checkout';
 import OrderComplete from './OrderComplete';
+import OrderHistory from './OrderHistory';
 
 // const RAILS_BASE_URL = 'http://localhost:3000/';
 
@@ -76,6 +77,7 @@ function Main() {
                             <p>Welcome {currentUser.name}</p>
                             <Link to="/user">My Cart</Link>
                             <Link to="/" onClick={() => handleLogout()}>Logout</Link>
+                            <Link to="/orderhistory">Order History</Link>
                         </div>
                     )
                     :
@@ -108,6 +110,7 @@ function Main() {
                         &&
                         <>
                         <Route path='/user' element={< Cart/>} />
+                        <Route path='/orderhistory' element={< OrderHistory/>} />
                         <Route path='/checkout' element={<Checkout />} />
                         <Route path='/ordercomplete' element={<OrderComplete />} />
                         </>
