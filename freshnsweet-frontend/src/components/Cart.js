@@ -1,30 +1,33 @@
 
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
+import {RAILS_BASE_URL,REACT_BASE_URL} from './baseurl' 
 
 import '../App.css';
 import '../css/cart.css';
 
-const BASE_URL = 'http://localhost:3000/';
 
 
 function Cart() {
+
+    const push = useNavigate();
+
     // Redux
     const currentUser = useSelector(state => state.currentUser);
     console.log('Cart currentUser', currentUser); // test
-
-    
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     // const [currentUser, setCurrentUser] = useState(null);
 
+
     useEffect(() => {
         showCartProducts();
 
-    }, []);
+    }, []); //  useEffect()
+
 
     const showCartProducts = async () => {
         // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -40,22 +43,28 @@ function Cart() {
             setLoading(false);
             setError(err);
         }
-    }
+    } // showCartProducts()
+
 
     const TotalPrice = () => {
         let totalAmount = 0;
         currentUser.cart.map(item => {
             totalAmount += item.quantity * item.product.price
         })
-        return totalAmount;
-    }
+        return totalAmount.toFixed(2);
+    } // TotalPrice()
+
+
+    const handleClick = () => {
+        push(`/checkout`);
+    } // handleClick()
 
     
     return (
-        <div>
+        <div className='cartbox'>
             <h2>My Cart</h2>
-            <p>TODO make the quantity increase and decrease</p>
-            <p>TODO add title to table</p>
+            {/* <p>TODO make the quantity increase and decrease</p>
+            <p>TODO add title to table</p> */}
             
             <div>
                 {
@@ -63,7 +72,7 @@ function Cart() {
                     ?
                     <p>Loading results...</p>
                     :
-                    currentUser &&
+                    currentUser.cart &&
                     <div className='cartDetailsBox center'>
                         <div className='cartDetailsGrid'>
                         {
@@ -94,11 +103,11 @@ function Cart() {
                         }
                         </div>
 
-                        <div>
+                        <div className='cartboxTotol'>
                             Totol: $<TotalPrice/>
                         </div>
 
-                        <button>
+                        <button onClick={handleClick}>
                             Checkout
                         </button>
 

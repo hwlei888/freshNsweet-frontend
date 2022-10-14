@@ -17,18 +17,46 @@
 }
 
 .allProductsItems img{
-    width: 80%;
+    width: 60%;
 }
 
 .productDetails img{
-    height: 40vh;
+    height: 30vh;
     width: auto;
+    margin-bottom: 5%;
     /* border: 1px solid green; */
 }
 
 .allProductsItems input{
     width: 80%;
     margin-bottom: 1%;
+}
+
+.quantityChange button{
+    width: 15%;
+    margin: 2%;
+}
+
+
+.quantityChangeDetails button{
+    width: 5%;
+    margin: 2%;
+}
+
+.carousel-indicators{
+    padding-bottom: 10%;
+}
+
+.realProductDetails span{
+    margin-left: 3%;
+}
+
+.realProductDetails_intro{
+    margin: 0 10%;
+}
+
+.quantityChangeDetails_addtochart{
+    margin: 1% 0;
 }
 
 

@@ -17,3 +17,16 @@ div{
     margin: 0 20%;
 }
 
+.cartbox h2{
+    text-align: center;
+}
+
+.cartbox button{
+    margin-top: 2%;
+}
+
+.cartboxTotol{
+    margin-top: 2%;
+}
+
+

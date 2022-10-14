@@ -7,18 +7,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import '../App.css'
 import '../css/products.css'
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import {RAILS_BASE_URL,REACT_BASE_URL} from './baseurl' 
 
-const PRODUCT_BASE_URL = 'http://localhost:3000/';
+// const RAILS_BASE_URL = 'http://localhost:3000/';
 
 
 function AllProducts(){
 
     // const params = useParams();
-    const push = useNavigate();
     // const dispatch = useDispatch();
+    const push = useNavigate();
 
     const currentUser = useSelector(state => state.currentUser);
-    
+
     console.log('AllProducts currentUser', currentUser);
 
     const [loading, setLoading] = useState(true);
@@ -31,14 +32,14 @@ function AllProducts(){
     useEffect(() => {
         findAllProdcuts();
 
-    },[]);
+    },[]); // useEffect()
 
     const findAllProdcuts = async () => {
         try {
 
             setLoading(true); // To show message when re-searching
 
-            const res = await axios.get(PRODUCT_BASE_URL + 'products');
+            const res = await axios.get(RAILS_BASE_URL + 'products');
             console.log('AllProducts useEffect', res.data);
 
             setLoading(false);
@@ -51,7 +52,7 @@ function AllProducts(){
             setError(err);
         }
 
-    }
+    } // findAllProdcuts()
 
 
     if(error){
@@ -61,7 +62,7 @@ function AllProducts(){
     function handleClick(productID){
         // console.log('handleClick AllProducts', productID); // for test
         push(`/products/${productID}`)
-    }
+    } // handleClick()
 
 
 
@@ -91,13 +92,13 @@ function AllProducts(){
                     currentUserCart.quantity += itemQuantities;
                 }
             })
-            const res = await axios.post(`http://localhost:3000/user/update`,  currentUser.cart)
+            const res = await axios.post(RAILS_BASE_URL + `user/update`,  currentUser.cart)
         }else {
             currentUser.cart.push({
                 quantity: itemQuantities,
                 product: item,
             })
-            const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: itemQuantities} )
+            const res = await axios.post(RAILS_BASE_URL + `user`, {product: item, quantity: itemQuantities} )
         }
 
     } // addToCart()
@@ -115,12 +116,7 @@ function AllProducts(){
                 return 0;
             }
         }
-    }
-
-
-
-
-
+    } // ShowCurrentQuantity()
 
 
     
@@ -141,7 +137,7 @@ function AllProducts(){
             ...quantities,
             [id]: newQuantity
         })
-    }
+    } // changeCartItemQuantity()
     
 
 
@@ -178,11 +174,10 @@ function AllProducts(){
                         </div>
                         <button onClick={() => addToCart(item)}>Add to Cart</button>
 
-                        <p>You have:<ShowCurrentQuantity id={item._id}/></p>
+                        <div>You have:<ShowCurrentQuantity id={item._id}/></div>
 
-                        <p>
-                            {showAddDone[item._id]}
-                        </p>
+                        <div>{showAddDone[item._id]}</div>
+                           
                     </div>
                 )
             }

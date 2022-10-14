@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import axios from 'axios';
 import {HashRouter as Router, Link, Route, Routes} from 'react-router-dom';
+import {RAILS_BASE_URL,REACT_BASE_URL} from './baseurl';
 
 import '../App.css';
 
@@ -13,8 +14,10 @@ import ProductDetails from './ProductDetails';
 import Category from './Category';
 import Cart from './Cart';
 import Login from './Login';
+import Checkout from './Checkout';
+import OrderComplete from './OrderComplete';
 
-const BASE_URL = 'http://localhost:3000/';
+// const RAILS_BASE_URL = 'http://localhost:3000/';
 
 
 function Main() {
@@ -32,9 +35,9 @@ function Main() {
         const token = localStorage.getItem('jwt');
         if(token){
             try{
-                // console.log('This setCurrentUserFunction', token); // test
+                console.log('This setCurrentUserFunction', token); // test
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-                const res = await axios.get(BASE_URL + 'users/current');
+                const res = await axios.get(RAILS_BASE_URL + 'users/current');
                 dispatch({type: 'currentUser/set', payload: res.data});
                 // localStorage.setItem('currentUser', JSON.stringify(res.data));
 
@@ -57,10 +60,12 @@ function Main() {
 
     return (
         <div>
-            <h1>Fresh N Sweet</h1>
+            <div className='h1title'><h1>Fresh N Sweet</h1></div>
+            
             <Router>
             <nav>
-                <Link to="/">Home</Link>
+                {/* <Link to="/">Home</Link> */}
+                <Link to="/" >Home</Link>
                 <Link to="/products">All Products</Link>
                 {/* <Link to="/user">My Cart</Link> */}
                 {
@@ -87,17 +92,26 @@ function Main() {
                 <Link to="/category/Best">Best Seller</Link>
 
 
-
             </nav>
 
 
                 <Routes>
+                    
                     <Route exact path='/' element={< Home/>}/>
                     <Route path='/products' element={< AllProducts/>} />
-                    <Route path='/user' element={< Cart/>} />
+                    
                     <Route path='/products/:id' element={< ProductDetails/>} />
                     <Route path='/category/:title' element={< Category />} />
                     <Route path='/login' element={<Login fetchCurrentUser={fetchCurrentUser}/>} />
+                    {
+                        currentUser
+                        &&
+                        <>
+                        <Route path='/user' element={< Cart/>} />
+                        <Route path='/checkout' element={<Checkout />} />
+                        <Route path='/ordercomplete' element={<OrderComplete />} />
+                        </>
+                    }
 
                 </Routes>
             </Router>

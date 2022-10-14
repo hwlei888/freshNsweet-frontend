@@ -2,11 +2,12 @@
 import {useState, useEffect} from 'react';
 import {useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import {RAILS_BASE_URL,REACT_BASE_URL} from './baseurl' 
 
 import '../App.css'
 import '../css/products.css'
 
-const BASE_URL = 'http://localhost:3000/';
+// const RAILS_BASE_URL = 'http://localhost:3000/';
 
 function Category(){
 
@@ -30,7 +31,7 @@ function Category(){
 
             setLoading(true);
 
-            const res = await axios.get(`http://localhost:3000/category/${params.title}`);
+            const res = await axios.get(`${RAILS_BASE_URL}category/${params.title}`);
             console.log('data Category', res.data); // for test
 
             setLoading(false);

@@ -7,11 +7,12 @@ import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel'
 import "bootstrap/dist/css/bootstrap.css";
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
+import {RAILS_BASE_URL,REACT_BASE_URL} from './baseurl';
 
 import '../App.css';
 import '../css/products.css';
 
-const BASE_URL = 'http://localhost:3000/';
+// const RAILS_BASE_URL = 'http://localhost:3000/';
 
 function ProductDetails() {
 
@@ -41,7 +42,7 @@ function ProductDetails() {
 
             setLoading(true);
 
-            const res = await axios.get(`http://localhost:3000/products/${params.id}`);
+            const res = await axios.get(RAILS_BASE_URL + `products/${params.id}`);
             // console.log('data ProductDetails', res.data.product); // for test
 
             setLoading(false);
@@ -85,13 +86,13 @@ function ProductDetails() {
                     currentUserCart.quantity += quantity;
                 }
             })
-            const res = await axios.post(`http://localhost:3000/user/update`,  currentUser.cart)
+            const res = await axios.post(RAILS_BASE_URL + `user/update`,  currentUser.cart)
         }else {
             currentUser.cart.push({
                 quantity: quantity,
                 product: item,
             })
-            const res = await axios.post(`http://localhost:3000/user`, {product: item, quantity: quantity} )
+            const res = await axios.post(RAILS_BASE_URL + `user`, {product: item, quantity: quantity} )
         }
     }
    
@@ -141,7 +142,7 @@ function ProductDetails() {
                         <p>${productDetails.price} / {productDetails.weight}</p>
                     </div>
 
-                    <div className='quantityChange'>
+                    <div className='quantityChangeDetails'>
                             <button className='minus' onClick={() => toggleCartItemQuantity('dec')} >
                                 -
                             </button>
@@ -152,15 +153,17 @@ function ProductDetails() {
                                 +
                             </button>
                     </div>
-                    <button onClick={() => addToCart(productDetails)}>Add to Cart</button>
+                    <button className='quantityChangeDetails_addtochart' onClick={() => addToCart(productDetails)}>Add to Cart</button>
 
-                    <div>
+                    <div className='realProductDetails'>
+                        Product Details:
                         {
                             productDetails.categories.map((item, index) => 
-                                <p key={index}>{item.title}</p>
+                                <span key={index}>{item.title}</span> 
                             )
                         }
-                        <p>{productDetails.introduction}</p>
+                        
+                        <div className='realProductDetails_intro'>{productDetails.introduction}</div>
                     </div>
                 </div>
             }

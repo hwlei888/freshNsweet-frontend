@@ -2,8 +2,12 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import {RAILS_BASE_URL,REACT_BASE_URL} from './baseurl';
 
-const BASE_URL = 'http://localhost:3000/';
+
+import '../css/login.css'
+
+// const RAILS_BASE_URL = 'http://localhost:3000/';
 
 function Login(props){
 
@@ -25,7 +29,7 @@ function Login(props){
     const handleSubmit = (ev) => {
         const request = {email, password};
         
-        axios.post(BASE_URL + 'login', request)
+        axios.post(RAILS_BASE_URL + 'login', request)
         .then(result => {
             localStorage.setItem('jwt', result.data.token);
             console.log('Login handlesubmit', result.data.token); // test
@@ -42,9 +46,9 @@ function Login(props){
 
 
     return(
-        <div>
+        <div className='loginbox'>
             <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
+            <form className='loginform' onSubmit={handleSubmit}>
                 <label>Login Form</label>
                 <br />
 

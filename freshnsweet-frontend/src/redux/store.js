@@ -1,9 +1,10 @@
 
 import {createStore} from 'redux';
 
+
 const initialState = {
     currentUser: null,
-    quantity: 0,
+    address: null,
 };
 
 
@@ -14,6 +15,11 @@ function reducer(state = initialState, action){
             return{
                 ...state,
                 currentUser: action.payload,
+            }
+        case 'checkOutForm/address':
+            return{
+                ...state,
+                address: action.payload
             }
         default:
             console.log('UNMATCHED ACTION:', action);
