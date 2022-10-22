@@ -94,7 +94,7 @@ function CheckoutForm(){
           elements,
           confirmParams: {
             // Make sure to change this to your payment completion page
-            return_url: `${RAILS_BASE_URL}ordercomplete`, 
+            return_url: "http://localhost:3001/#/ordercomplete", 
           },
         });
         

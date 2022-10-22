@@ -21,7 +21,7 @@ function OrderComplete(){
     useEffect(() => {
         
         if(currentUser.cart.length !== 0){
-            window.location.replace(RAILS_BASE_URL + "ordercomplete"); // any better way?????
+            window.location.replace("http://localhost:3001/#/ordercomplete"); // any better way?????
         }
 
         updateOrderHistory();
