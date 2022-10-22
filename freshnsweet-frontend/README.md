@@ -43,7 +43,7 @@ It is a full-stack web project that uses stripe to support payment system, along
 
 Front-end: React.js, Hooks, Redux, Stripe, Axios, CSS, Bootstrap
 
-Back-End: Node.js, Express.js, Mongo DB, Mongoose
+Back-End: Node.js, Express.js, Mongo DB, Mongoose, Bcrypt
 
 
 ## TODO Lists:
