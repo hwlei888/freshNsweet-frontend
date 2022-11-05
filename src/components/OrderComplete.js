@@ -16,15 +16,17 @@ function OrderComplete(){
     // const address = useSelector(state => state.address);
     
     
-    console.log('CheckoutForm currentUser', currentUser)
     
     useEffect(() => {
         
+        updateOrderHistory();
+        
+        console.log('CheckoutForm currentUser', currentUser)
+
         if(currentUser.cart.length !== 0){
             window.location.replace(REACT_BASE_URL + "ordercomplete"); // any better way?????
         }
 
-        updateOrderHistory();
         
         
     },[]);
