@@ -11,14 +11,14 @@ import '../css/orderhistory.css'
 
 function OrderHistory(){
 
-    // const currentUser = useSelector(state => state.currentUser);
+    const currentUser = useSelector(state => state.currentUser);
 
-    // console.log('Cart currentUser outside showCartProducts', currentUser); // test
+    console.log('Cart currentUser outside showCartProducts', currentUser); // test
 
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentUser, setCurrentUser] = useState(null);
+    // const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         showCartProducts();
@@ -28,12 +28,12 @@ function OrderHistory(){
 
     const showCartProducts = async () => {
 
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         try {
             setLoading(false);
             // localStorage
-            console.log('Cart currentUser inside showCartProducts', currentUser); // test
-            setCurrentUser(currentUser);
+            // console.log('Cart currentUser inside showCartProducts', currentUser); // test
+            // setCurrentUser(currentUser);
 
         }catch(err){
             console.error('Error loading products in cart', err);
