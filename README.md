@@ -5,7 +5,7 @@
 
 ## App Links:
 - [Backend Heroku](https://shrouded-bayou-28028.herokuapp.com)
-- [Frontend GitHub Pages](https://hwlei888.github.io/freshNsweet-frontend)
+- [Frontend Demo](https://hwlei888.github.io/freshNsweet-frontend)
 
 Demo account: angie@gmail.com
 
@@ -18,7 +18,7 @@ A project as part of the General Assembly Software Intensive
 - Fresh N Sweet is an online shopping site where users can buy fresh fruit and
 vegetables online and deliver them to users' addresses after payment.
 
-- It allows users to set up an account, log in and put the products in the cart as
+- It allows users to log in and put the products in the cart as
 many as they want.
 
 - Users can also find their products in different categories.

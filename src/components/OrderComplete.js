@@ -27,8 +27,6 @@ function OrderComplete(){
             window.location.replace(REACT_BASE_URL + "ordercomplete"); // any better way?????
         }
 
-        
-        
     },[]);
     
     const updateOrderHistory = async () => {
